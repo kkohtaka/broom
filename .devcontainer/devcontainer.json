@@ -11,21 +11,21 @@
                 "ms-python.python",
                 "ms-python.vscode-pylance",
                 "ms-python.black-formatter",
-                "ms-python.flake8",
                 "ms-python.isort"
             ],
             "settings": {
                 "python.defaultInterpreterPath": "/usr/local/bin/python",
                 "python.linting.enabled": true,
-                "python.linting.flake8Enabled": true,
+                "python.linting.ruffEnabled": true,
+                "python.linting.ruffPath": "ruff",
                 "python.formatting.provider": "black",
                 "editor.formatOnSave": true,
                 "editor.codeActionsOnSave": {
-                    "source.organizeImports": true
+                    "source.fixAll.ruff": true
                 }
             }
         }
     },
-    "postCreateCommand": "pip install --user -r requirements.txt",
+    "postCreateCommand": "pip install --user -r requirements.txt ruff",
     "remoteUser": "vscode"
-} 
+}
