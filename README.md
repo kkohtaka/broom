@@ -82,6 +82,18 @@ To set up the development environment:
 pip install -r requirements.txt
 ```
 
+### Running Unit Tests
+
+To run all unit tests using pytest:
+```bash
+pytest
+```
+
+To run only the parser tests:
+```bash
+pytest tests/test_parser.py
+```
+
 ## Dependencies
 
 - LangChain for embeddings and vector store management
