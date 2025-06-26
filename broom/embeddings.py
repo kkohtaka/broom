@@ -12,10 +12,7 @@ from langchain_core.embeddings import Embeddings
 class CodeEmbedder:
     """Class for generating embeddings from code."""
 
-    def __init__(
-        self,
-        model_name: str = "Salesforce/SFR-Embedding-Code-400M_R"
-    ):
+    def __init__(self, model_name: str = "nomic-ai/CodeRankEmbed"):
         """Initialize the code embedder.
 
         Args:
@@ -23,16 +20,13 @@ class CodeEmbedder:
         """
         self.model: Embeddings = HuggingFaceEmbeddings(
             model_name=model_name,
-            model_kwargs={
-                "device": "cpu",
-                "trust_remote_code": True
-            },
+            model_kwargs={"device": "cpu", "trust_remote_code": True},
             encode_kwargs={
                 "normalize_embeddings": True,
                 "padding": True,
                 "truncation": True,
-                "max_length": 512
-            }
+                "max_length": 512,
+            },
         )
 
     def generate_embeddings(self, texts: List[str]) -> np.ndarray:
