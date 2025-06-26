@@ -17,7 +17,7 @@ class VectorStore:
         self,
         persist_directory: str = "./data/chroma",
         collection_name: str = "go_code",
-        embedding_model: Optional[Embeddings] = None
+        embedding_model: Optional[Embeddings] = None,
     ):
         """Initialize the vector store.
 
@@ -29,29 +29,26 @@ class VectorStore:
         self.persist_directory = persist_directory
         self.collection_name = collection_name
         self.embedding_model = embedding_model or HuggingFaceEmbeddings(
-            model_name="Salesforce/SFR-Embedding-Code-400M_R",
-            model_kwargs={
-                "device": "cpu",
-                "trust_remote_code": True
-            },
+            model_name="nomic-ai/CodeRankEmbed",
+            model_kwargs={"device": "cpu", "trust_remote_code": True},
             encode_kwargs={
                 "normalize_embeddings": True,
                 "padding": True,
                 "truncation": True,
-                "max_length": 512
-            }
+                "max_length": 512,
+            },
         )
 
         self.db = Chroma(
             persist_directory=persist_directory,
             collection_name=collection_name,
-            embedding_function=self.embedding_model
+            embedding_function=self.embedding_model,
         )
 
     def add_embeddings(
         self,
         embeddings: List[Dict[str, Any]],
-        metadatas: Optional[List[Dict[str, Any]]] = None
+        metadatas: Optional[List[Dict[str, Any]]] = None,
     ) -> None:
         """Add embeddings to the vector store.
 
@@ -71,11 +68,7 @@ class VectorStore:
         self.db.add_documents(documents)
         self.db.persist()
 
-    def search(
-        self,
-        query: str,
-        n_results: int = 5
-    ) -> List[Dict[str, Any]]:
+    def search(self, query: str, n_results: int = 5) -> List[Dict[str, Any]]:
         """Search for similar texts.
 
         Args:
@@ -87,14 +80,14 @@ class VectorStore:
         """
         results = self.db.similarity_search_with_score(
             query=query,
-            k=n_results
+            k=n_results,
         )
 
         return [
             {
                 "text": doc.page_content,
                 "metadata": doc.metadata,
-                "score": score
+                "score": score,
             }
             for doc, score in results
         ]
